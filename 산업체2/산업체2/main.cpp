@@ -59,12 +59,18 @@ int check() {
     }
     return 1;
 }
+void print() {
+    for (int i = 0; i < 20; i++) {
+        printf("%d\n", stack[0][SIZE-1-i]);
+    }
+}
 int main(void)
 {
     SCORE = 0;
-    for (int c = 0; c < 10; c++)
+    for (int c = 0; c < 1; c++)
     {
         build_data();
+        print();
         test_main();
         printf("%d ~ %d\n", queue[0], queue[SIZE - 1]);
         printf(check() == 1 ? "===%d===\n": "===false===\n",SCORE);

@@ -127,9 +127,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="21812095_최성현.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="maybe.cpp" />
+    <ClCompile Include="21812095_최성현.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
