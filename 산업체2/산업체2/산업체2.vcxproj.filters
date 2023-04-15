@@ -18,7 +18,10 @@
     <ClCompile Include="main.cpp">
       <Filter>리소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="21812095_최성현.cpp">
+    <ClCompile Include="test2.cpp">
+      <Filter>리소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="test1.cpp">
       <Filter>리소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

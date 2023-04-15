@@ -52,17 +52,51 @@ static void build_data(void)
     for (int c = 1; c < 10; c++) sp[c] = 0;
     qs = 0;
 }
+
 int check() {
-    for (int i = 1; i < SIZE; i++) {
-        if (queue[i] < queue[i - 1])
-            return 0;
+    int ret = 1;
+    int err_cnt = 0;
+    for (int i = 1; i < SIZE; i++) {    
+        if (queue[i] < queue[i - 1]) {
+            printf("[%d]%d, [%d]%d\n", i-1,queue[i - 1],i, queue[i]);
+            ret = 0; 
+            err_cnt++;
+        }
     }
-    return 1;
+    printf("error:%d\n", err_cnt);
+    return ret;
 }
 void print() {
-    for (int i = 0; i < 20; i++) {
-        printf("%d\n", stack[0][SIZE-1-i]);
+    int data;
+    int cnt[10] = { 0 ,0,0,0,0,0,0,0,0,0};
+    
+    for (int i = 10000; i >=0 ; i--) {   
+            for (int j = 0; j < 10; j++) {
+                data = stack[j][i];
+
+                if (!data || sp[j] <= i) {
+                    if (i < 100)
+                        printf("-\t");
+                }
+                else {
+                    if (i < 100)
+                        printf("%d\t", data);
+                    cnt[j]++;
+                }
+            }
+            if (i < 100)
+                printf("\n");
     }
+    printf("\n---------------------------------------------------------------------------------------------\n");
+    for (int i = 0; i < 10; i++)
+        printf("%d\t", i);
+    printf("\n");
+    int res = 0;
+    for (int i = 0; i < 10; i++) {
+        printf("%d\t", cnt[i]);
+        res += cnt[i];
+    }
+    printf("%d\t", res);
 }
 int main(void)
 {
@@ -70,10 +104,9 @@ int main(void)
     for (int c = 0; c < 1; c++)
     {
         build_data();
-        print();
         test_main();
-        printf("%d ~ %d\n", queue[0], queue[SIZE - 1]);
-        printf(check() == 1 ? "===%d===\n": "===false===\n",SCORE);
+        printf("%d\n", qs);
+        printf(check() == 1 ? "===%d===\n" : "===false===\n",SCORE);
         
     }
     
