@@ -96,12 +96,12 @@ void print() {
         printf("%d\t", cnt[i]);
         res += cnt[i];
     }
-    printf("%d\t", res);
+    printf("\n%d\n", res);
 }
 int main(void)
 {
     SCORE = 0;
-    for (int c = 0; c < 1; c++)
+    for (int c = 0; c < 10; c++)
     {
         build_data();
         test_main();

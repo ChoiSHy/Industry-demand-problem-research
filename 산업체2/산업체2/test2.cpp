@@ -1,168 +1,173 @@
-/*
+extern void my_push(int);
+extern int my_pop(int);
 extern void enqueue();
-extern int my_pop(int s);
-extern void my_push(int s);
 
-#include <stdio.h>
-#include <Windows.h>
-extern void print();
-
-#define SIZE 10000
+#define size 10000
 
 int count[10];
 
 int pop(int from) {
-	int ret;
-	if (count[from] <= 0)
-		return -1;
-
-	ret = my_pop(from);
 	count[from]--;
-
-	return ret;
+	return my_pop(from);
 }
-void push(int to, int val) {
+void push(int to) {
+	++count[to];
 	my_push(to);
-	count[to]++;
 }
 
-void spread(int base, int from) {
-	int data = 0;
-	int cnt = count[from];
-
-	while(data != -1) {
-		data = pop(from);
-
-		if (data >= base + 256) {
-			if (from == 9 && count[from] != 0) {
-				push(0, data);
-			}
-			else {
-				push(9, data);
-			}
+void spread() {
+	int data;
+	for (int i = 0; i < size; i++) {
+		data = pop(0);
+		if (data >= 1020) {
+			push(9);
 		}
-		else if (data >= base + 128) {
-			if (from == 8 && count[from] != 0) {
-
-				push(0, data);
-			}
-			else {
-
-				push(8, data);
-			}
+		else if (data >= 764) {
+			push(8);
 		}
-		else if (data >= base + 64)
-		{
-			if (from == 7 && count[from] != 0) {
-
-				push(0, data);
-			}
-			else {
-
-				push(7, data);
-			}
+		else if (data >= 636) {
+			push(7);
 		}
-		else if (data >= base + 32)
-		{
-			if (from == 6 && count[from] != 0) {
-
-				push(0, data);
-			}
-			else {
-
-				push(6, data);
-			}
+		else if (data >= 572) {
+			push(6);
 		}
-		else if (data >= base + 16)
-		{
-			if (from == 5 && count[from] != 0) {
-
-				push(0, data);
-			}
-			else {
-
-				push(5, data);
-			}
+		else if (data >= 540) {
+			push(5);
 		}
-		else if (data >= base + 8)
-		{
-			if (from == 4 && count[from] != 0) {
-
-				push(0, data);
-			}
-			else {
-
-				push(4, data);
-			}
+		else if (data >= 524) {
+			push(4);
 		}
-		else if (data >= base + 4)
-		{
-			if (from == 3 && count[from] != 0) {
-
-				push(0, data);
-			}
-			else {
-
-				push(3, data);
-			}
+		else if (data >= 516) {
+			push(3);
 		}
-		else if (data >= base + 2)
-		{
-			if (from == 2 && count[from] != 0) {
-
-				push(0, data);
-			}
-			else {
-
-				push(2, data);
-			}
+		else if (data >= 512) {
+			push(2);
 		}
-		else if (data >= base + 1)
-		{
-			if (from == 1 && count[from] != 0) {
-
-				push(0, data);
-			}
-			else {
-
-				push(1, data);
-			}
+		else if (data >= 1) {	// 1 ~ 511
+			push(1);
 		}
-		else if(data <= base){
+		else {
 			enqueue();
 		}
 	}
+	while (count[1] > 0) {	// 1 ~ 511
+		data = pop(1);
 
+		if (data >= 256) {
+			push(8);
+		}
+		else if (data >= 128) {
+			push(7);
+		}
+		else if (data >= 64) {
+			push(6);
+		}
+		else if (data >= 32) {
+			push(5);
+		}
+		else if (data >= 16) {
+			push(4);
+		}
+		else if (data >= 8) {
+			push(3);
+		}
+		else if (data >= 4) {
+			push(2);
+		}
+		else if (data >= 2) {	// 2,3
+			push(0);
+		}
+		else
+			enqueue();	// 1
+	}
+	while (count[0]>0) {
+		data=pop(0);
+		if (data > 2)
+			push(1);	// 3
+		else
+			enqueue();	// 2
+	}
+	while (count[1] > 0) {
+		pop(1);	// 3
+		enqueue();
+	}
+}
+
+void flush(int from, int b) {
+	int data;
+	
+	while (count[from]>0) {
+		data = pop(from);
+		if (b < 512 && data >= 512) {
+			push(from);
+			break;
+		}
+		if (data >= b + 256) {
+			if (from == 9)
+				push(8);
+			else
+				push(9);
+		}
+		else if (data >= b + 128) {
+			push(7);
+		}
+		else if (data >= b + 64) {
+			push(6);
+		}
+		else if (data >= b + 32) {
+			push(5);
+		}
+		else if (data >= b + 16) {
+			push(4);
+		}
+		else if (data >= b + 8) {
+			push(3);
+		}
+		else if (data >= b + 4) {
+			push(2);
+		}
+		else if (data >= b + 2) {
+			push(1);
+		}
+		else if (data >= b + 1) {
+			push(0);
+		}
+		else {
+			enqueue();
+		}
+	}
+	while (count[0] > 0) {
+		pop(0);
+		enqueue();
+	}
+}
+void flushes(int from, int* b) {
+	flush(from, *b);
+	*b += 2;
+	flush(1, *b);
+	*b += 2;
+
+	for (int i = 2; i < from; i++) {
+		flushes(i, b);
+	}
 }
 
 void test_main() {
-	int r, j;
-	count[0] = SIZE;
-
+	int b;
+	count[0] = size;
+	spread();
 	
-	for (int i = 0; i < 1024; i += 2) {
-		// 값이 들은 스택 중, 가장 번호가 빠른 스택(j)을 spread
-		j = 0;
-		
-		for (; j < 10; j++)
-			if (count[j] != 0)
-				break;
-		spread(i, j);
-		
-		// 0번 스택에서 값을 spread 한 경우, 다음으로 가장 빠른 스택(j)를 찾아 spread/*
-		if (j == 0 && i != 0) {
-			for (j; j < 10; j++)
-				if (count[j] != 0) break;
-			spread(i, j);
-		}
-		// 1번 스택에 남은 값들을 spread 
-		// 1번 스택에 있는 값들은 enqueue한 값들보다 1 큰 값이므로 바로 enqueue해도 무방.
-		while (count[1] > 0) {
-				pop(1);
-				enqueue();
-		}
-			
-
+	for (int i = 2; i < 9; i++) {
+		b = 1;
+		for (int j = 0; j < i; j++)
+			b *= 2;
+		flushes(i, &b);
 	}
-}*/
-
+	for (int i = 2; i < 10; i++) {
+		b = 1;
+		for (int j = 0; j < i; j++)
+			b *= 2;
+		b += 508;
+		flushes(i, &b);
+	}
+}
