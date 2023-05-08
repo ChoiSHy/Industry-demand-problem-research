@@ -1,3 +1,3 @@
 ﻿  21812095_최성현.cpp
-C:\Users\tjdgu\OneDrive\바탕 화면\2023\산업체\산업체3\산업체3\21812095_최성현.cpp(16): warning C4172: 지역 변수 또는 임시: value의 주소를 반환하고 있습니다.
-  산업체3.vcxproj -> C:\Users\tjdgu\OneDrive\바탕 화면\2023\산업체\산업체3\x64\Debug\산업체3.exe
+C:\Users\HOME\Desktop\2023\산업체\산업체3\산업체3\21812095_최성현.cpp(127,29): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  산업체3.vcxproj -> C:\Users\HOME\Desktop\2023\산업체\산업체3\x64\Debug\산업체3.exe
