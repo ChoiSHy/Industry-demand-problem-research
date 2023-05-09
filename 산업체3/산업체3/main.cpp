@@ -3,7 +3,8 @@
 #include <string.h>
 #include <time.h>
 
-#define DEPTH_SIZE 127
+//#define DEPTH_SIZE 127
+#define DEPTH_SIZE 10
 #define PARAM_SIZE 100
 #define STRING_SIZE 12800
 
@@ -29,8 +30,8 @@ static char* make_rand_number_to_string(void) {
 
 static void build_data(char question[STRING_SIZE]) {
 	strcpy_s(question, STRING_SIZE, make_rand_number_to_string());
-	int count = (rand() % (PARAM_SIZE - 1)) + 2;
-
+	//int count = (rand() % (PARAM_SIZE - 1)) + 2;
+	int count = 15;
 	for (int i = 1; i < count; i++) {
 		(rand() % 2 == 0) ? strcat_s(question, STRING_SIZE, "+") : strcat_s(question, STRING_SIZE, "-");
 		strcat_s(question, STRING_SIZE, make_rand_number_to_string());

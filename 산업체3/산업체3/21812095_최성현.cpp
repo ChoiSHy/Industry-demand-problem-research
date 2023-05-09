@@ -1,4 +1,5 @@
 // DO NOT ANY INCLUDE
+/*
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,23 +7,31 @@
 #define STRING_SIZE 12800
 
 int qidx;
-static int result[128];
+static int pres[128];
+static int mres[128];
 static int param[128];
 
-static int len_result;
+static int len_pres;
+static int len_mres;
 static int len_param;
 
 void print() {
-	printf("%c", !param[0] ? '+' : '-');
+	printf("valu : %c", !param[0] ? '+' : '-');
 	for (int i = 1; i < len_param; i++)
-		printf("%c", param[i] + 'A');
+		printf("%c(%d)", param[i] + 'A',param[i]);
 	printf("\n");
 }
-void get_result() {
-	printf("%c", !result[0] ? '+' : '-');
-	for (int i = 1; i < len_result; i++)
-		printf("%c", result[i] + 'A');
-	printf("\n");
+void print_pres() {
+	printf("pres : +");
+	for (int i = 1; i < len_pres; i++)
+		printf("%c[%d]", pres[i] + 'A',pres[i]);
+	printf("\n\n");
+}
+void print_mres() {
+	printf("mres : -");
+	for (int i = 1; i < len_mres; i++)
+		printf("%c[%d]", mres[i] + 'A',mres[i]);
+	printf("\n\n");
 }
 void get_value(const char question[STRING_SIZE]) {
 	len_param = 0;
@@ -50,87 +59,87 @@ void get_value(const char question[STRING_SIZE]) {
 		}
 	}
 }
-void add() {
+void addp() {
 	int i = 1;
 	int carry = 0;
 	int res = 0;
-
-	for (; i < 128; i++) {
-		if (len_result < i || len_param < i)  break;
-
-		res = result[i] + param[i] + carry;
-		carry = res / 26;
-		res = res % 26;
-
-		result[i] = res;
-	}
-	while (len_result > i) {
-		res = result[i] + carry;
+	while (i < len_pres && i < len_param) {
+		res = pres[i] + param[i] + carry;
 		carry = res / 26;
 		res %= 26;
 
-		result[i++] = res;
+		pres[i++] = res;
 	}
-	while (len_param > i) {
+	while (i < len_pres) {
+		res = pres[i] + carry;
+		carry = res / 26;
+		res %= 26;
+
+		pres[i++] = res;
+	}
+	while (i < len_param) {
 		res = param[i] + carry;
 		carry = res / 26;
 		res %= 26;
 
-		result[i++] = res;
+		pres[i++] = res;
 	}
-	len_result = i;
+	if (carry == 1)
+		pres[i++] = 1;
+
+	len_pres = i;
 }
-void sub() {
+void addm() {
 	int i = 1;
 	int carry = 0;
 	int res = 0;
+	while (i < len_mres && i < len_param) {
+		res = mres[i] + param[i] + carry;
+		carry = res / 26;
+		res %= 26;
 
-	for (; i < 128; i++) {
-		if (len_result <= i || len_param <= i)  break;
-
-		res = result[i] - param[i] - carry;
-		carry = res < 0 ? 1 : 0;
-		res = res < 0 ? 26 + res : res;
-
-		result[i] = res;
+		mres[i++] = res;
 	}
-	while (len_result > i) {
-		res = result[i] - carry;
-		carry = res < 0 ? 1 : 0;
-		res = res < 0 ? 26 + res : res;
+	while (i < len_mres) {
+		res = mres[i] + carry;
+		carry = res / 26;
+		res %= 26;
 
-		result[i++] = res;
+		mres[i++] = res;
 	}
-	while (len_param > i) {
-		res = -param[i] - carry;
-		carry = res < 0 ? 1 : 0;
-		res = res < 0 ? 26 + res : res;
+	while (i < len_param) {
+		res = param[i] + carry;
+		carry = res / 26;
+		res %= 26;
 
-		result[i++] = res;
+		mres[i++] = res;
 	}
-	len_result = i;
-}
-void set1() {
-	param[0] = 0;
-	param[1] = 1;
-	param[2] = 10;
-	len_param = 3;
-}
-void set2() {
-	param[0] = 0;
-	param[1] = 2;
-	len_param = 2;
+	if (carry == 1)
+		mres[i++] = 1;
+
+	len_mres = i;
 }
 void test_main(char answer[STRING_SIZE], const char question[STRING_SIZE])
 {
 	qidx = strlen(question) - 1;
-	get_result();
+	mres[0] = 1;
 	//get_value(question);
-	set1();
-	add();
-	get_result();
-	set2();
-	print();
-	sub();
-	get_result();
-}
+	do {
+		get_value(question);
+		
+		if (param[0]) {
+			print();
+			addm();
+			print_mres();
+		}
+		else {
+			print();
+			addp();
+			print_pres();
+		}
+
+	} while (len_param > 1);
+	printf("===================\n");
+	print_mres();
+	print_pres();
+}*/
