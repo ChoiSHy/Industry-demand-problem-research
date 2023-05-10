@@ -49,8 +49,8 @@ int get_value(const char question[STRING_SIZE]) {
 			param[i] = question[qidx--] - 'A';
 
 			if (qidx < 0) {
-				len_param = i;
-				return 1;
+				len_param = i+1;
+				return -1;
 			}
 		}
 	}
@@ -129,19 +129,28 @@ void test_main(char answer[STRING_SIZE], const char question[STRING_SIZE])
 		}
 		printf("\n");
 
-	} while (len_param > 0);
+	} while (pm>=0);
 
 	printf("[+] final"); print_res(pres, len_p);
 	printf("[-] final"); print_res(mres, len_m);
 
 	printf("<<sub result>>\n\n");
 	if (compare(pres, mres,len_p,len_m) >= 0) {
-		sub(pres, mres, &len_p, len_m);
-		print_res(pres, len_p);
+		sub( pres, mres, &len_p, len_m);
+		for (int i = 0; i < len_p; i++)
+			answer[i] = 'A'+pres[len_p-1-i];
+		for (int i = 0; i < len_p; i++)
+			printf("%c", answer[i]);
+		printf("\n");
 	}
 	else {
-		sub(mres, pres, &len_m, len_p);
-		print_res(mres, len_m);
+		sub( mres, pres, &len_m, len_p);	
+		answer[0] = '-';
+		for (int i = 1; i <= len_m; i++)
+			answer[i] = 'A'+mres[len_m-i];
+		for (int i = 0; i <= len_m; i++)
+			printf("%c", answer[i]);
+		printf("\n");
 	}
 	printf("\n\n%s\n", question);
 }

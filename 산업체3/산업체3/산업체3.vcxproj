@@ -127,7 +127,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="21812095_최성현.cpp" />
     <ClCompile Include="case1.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
