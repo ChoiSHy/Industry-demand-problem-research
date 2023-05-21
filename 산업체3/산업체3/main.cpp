@@ -3,8 +3,7 @@
 #include <string.h>
 #include <time.h>
 
-//#define DEPTH_SIZE 127
-#define DEPTH_SIZE 10
+#define DEPTH_SIZE 127
 #define PARAM_SIZE 100
 #define STRING_SIZE 12800
 
@@ -30,8 +29,7 @@ static char* make_rand_number_to_string(void) {
 
 static void build_data(char question[STRING_SIZE]) {
 	strcpy_s(question, STRING_SIZE, make_rand_number_to_string());
-	//int count = (rand() % (PARAM_SIZE - 1)) + 2;
-	int count = 15;
+	int count = (rand() % (PARAM_SIZE - 1)) + 2;
 	for (int i = 1; i < count; i++) {
 		(rand() % 2 == 0) ? strcat_s(question, STRING_SIZE, "+") : strcat_s(question, STRING_SIZE, "-");
 		strcat_s(question, STRING_SIZE, make_rand_number_to_string());
@@ -41,7 +39,7 @@ static void build_data(char question[STRING_SIZE]) {
 int main(void) {
 	unsigned int SCORE = 0;
 
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 100; i++) {
 		char question[STRING_SIZE];
 		build_data(question);
 		char answer[STRING_SIZE];
@@ -49,7 +47,13 @@ int main(void) {
 		unsigned int t = clock();
 		test_main(answer, question);
 		SCORE += (clock() - t);
-
+		for (int i = 0; i < PARAM_SIZE; i++) {
+			if ((answer[i]>='A' && answer[i] <= 'Z') || answer[i] == '-')
+				printf("%c", answer[i]);
+			else
+				break;
+		}
+		printf("\n");
 		if (check_data(answer, question) == false) {
 			SCORE += 1000000;
 		}

@@ -1,24 +1,9 @@
 // DO NOT ANY INCLUDE
-#include <stdio.h>
-#include <string.h>
 #define STRING_SIZE 12800
 
 int qidx;
 static int param[127];
 static int len_param;
-
-void print() {
-	printf("val : ");
-	for (int i = 0; i < len_param; i++)
-		printf("%c(%d)\t", param[i] + 'A', param[i]);
-	printf("\n");
-}
-void print_res(int* res, int len) {
-	printf("   res : ");
-	for (int i = 0; i < len; i++)
-		printf("%c[%d]\t", res[i] + 'A', res[i]);
-	printf("\n\n");
-}
 
 int compare(int* p, int* m, int lenP, int lenM) {
 	if (lenP == lenM) {
@@ -103,7 +88,15 @@ void sub(int* from, int* what, int* lenF, int lenW) {
 
 		from[i++] = res;
 	}
+	if (res == 0)
+		i--;
 	*lenF = i;
+}
+int strlen(const char* str) {
+	int len = 0;
+	while (str[len] != '\0')
+		len++;
+	return len;
 }
 void test_main(char answer[STRING_SIZE], const char question[STRING_SIZE])
 {
@@ -111,46 +104,27 @@ void test_main(char answer[STRING_SIZE], const char question[STRING_SIZE])
 	int pres[127]={0}, len_p = 0;
 	int mres[127]={0}, len_m = 0;
 	qidx = strlen(question) - 1;
-
-	printf("[+] origin"); print_res(pres, len_p);
-	printf("[-] origin"); print_res(mres, len_m);
 	do {
 		pm = get_value(question);
 		
 		if (pm) {
-			printf("[+]"); print();
 			add(pres, &len_p);
-			print_res(pres, len_p);
 		}
 		else {
-			printf("[-]"); print();
 			add(mres, &len_m);
-			print_res(mres, len_m);
 		}
-		printf("\n");
 
 	} while (pm>=0);
 
-	printf("[+] final"); print_res(pres, len_p);
-	printf("[-] final"); print_res(mres, len_m);
-
-	printf("<<sub result>>\n\n");
 	if (compare(pres, mres,len_p,len_m) >= 0) {
 		sub( pres, mres, &len_p, len_m);
 		for (int i = 0; i < len_p; i++)
 			answer[i] = 'A'+pres[len_p-1-i];
-		for (int i = 0; i < len_p; i++)
-			printf("%c", answer[i]);
-		printf("\n");
 	}
 	else {
 		sub( mres, pres, &len_m, len_p);	
 		answer[0] = '-';
 		for (int i = 1; i <= len_m; i++)
 			answer[i] = 'A'+mres[len_m-i];
-		for (int i = 0; i <= len_m; i++)
-			printf("%c", answer[i]);
-		printf("\n");
 	}
-	printf("\n\n%s\n", question);
 }
